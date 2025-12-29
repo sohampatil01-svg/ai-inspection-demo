@@ -1,6 +1,7 @@
 streamlit==1.25.0
 pandas>=2.0
-Pillow>=10.0
+# Pillow must be <10 to satisfy Streamlit 1.25 dependencies
+Pillow>=9.5,<10
 snowflake-connector-python>=3.0.0
 python-dotenv>=1.0
 numpy>=1.25
