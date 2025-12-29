@@ -1,0 +1,9 @@
+# Full/optional requirements for local use or server installs that need Snowflake
+streamlit==1.25.0
+pandas>=2.0
+Pillow>=9.5,<10
+numpy>=1.25
+snowflake-connector-python>=3.0.0
+python-dotenv>=1.0
+# Add scipy if you want the more accurate Sobel edge detector used optionally in image_classifier
+scipy>=1.11

@@ -4,7 +4,6 @@ import os
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 from datetime import datetime
-from app.snowflake_client import SnowflakeClient
 from app.image_classifier import classify_image
 
 st.set_page_config(page_title="AI-Assisted Inspection", layout="wide")
@@ -192,28 +191,34 @@ if st.button("Classify now"):
                 st.image(img, caption=f"{row['room_name']} — {row['label']} (image missing)")
 
     st.markdown("---")
-    st.subheader("Upload results to Snowflake")
+    st.subheader("Upload results to Snowflake (optional)")
     if st.button("Upload to Snowflake"):
-        sf = SnowflakeClient()
+        # Lazy-import Snowflake helper so deployments without Snowflake deps don't fail
         try:
-            sf.ensure_table()
-            insert_rows = []
-            for _, r in results_df.iterrows():
-                insert_rows.append((
-                    int(r["property_id"]),
-                    r["property_name"],
-                    int(r["room_id"]),
-                    r["room_name"],
-                    r["image_filename"],
-                    r["label"],
-                    float(r["score"]),
-                    r.get("notes", "")
-                ))
-            ok = sf.insert_findings(insert_rows)
-            if ok:
-                st.success("Uploaded results to Snowflake table `INSPECTION_FINDINGS`")
+            from app.snowflake_client import SnowflakeClient
         except Exception as e:
-            st.error(f"Snowflake upload failed: {e}")
+            st.error("Snowflake client not available in this environment.\nTo enable Snowflake upload, install full requirements (see README) or run locally with `requirements-full.txt`.\nError: " + str(e))
+        else:
+            sf = SnowflakeClient()
+            try:
+                sf.ensure_table()
+                insert_rows = []
+                for _, r in results_df.iterrows():
+                    insert_rows.append((
+                        int(r["property_id"]),
+                        r["property_name"],
+                        int(r["room_id"]),
+                        r["room_name"],
+                        r["image_filename"],
+                        r["label"],
+                        float(r["score"]),
+                        r.get("notes", "")
+                    ))
+                ok = sf.insert_findings(insert_rows)
+                if ok:
+                    st.success("Uploaded results to Snowflake table `INSPECTION_FINDINGS`")
+            except Exception as e:
+                st.error(f"Snowflake upload failed: {e}")
 
 else:
     st.info("Press 'Classify now' to run heuristic classification and scoring.")

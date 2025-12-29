@@ -1,11 +1,12 @@
+"""Snowflake helper - lazy imports to avoid hard dependency during Streamlit Cloud installs.
+
+This module defers importing the Snowflake connector until a method that needs it is called.
+If the connector is not installed in the environment, the methods raise a friendly RuntimeError.
+"""
+
 import os
 from dotenv import load_dotenv
 load_dotenv()
-
-try:
-    import snowflake.connector
-except Exception:
-    snowflake = None
 
 
 class SnowflakeClient:
@@ -33,12 +34,15 @@ class SnowflakeClient:
         self.role = os.getenv("SNOWFLAKE_ROLE")
 
     def _conn(self):
-        if snowflake is None:
-            raise RuntimeError("snowflake-connector-python not installed or failed to import")
+        try:
+            import snowflake.connector as sf
+        except Exception:
+            raise RuntimeError("snowflake-connector-python not installed in this environment. Install the optional dependencies from requirements-full.txt to enable Snowflake integration.")
+
         if not all([self.account, self.user, self.password, self.warehouse, self.database, self.schema]):
             raise RuntimeError("Missing one or more Snowflake environment variables. See README.")
 
-        conn = snowflake.connector.connect(
+        conn = sf.connect(
             account=self.account,
             user=self.user,
             password=self.password,

@@ -32,19 +32,14 @@ streamlit run app/streamlit_app.py
 3. Follow the UI to load `data/sample_properties.csv` and (optionally) place images into `data/images/`.
 
 **Snowflake integration**
-- The app contains `app/snowflake_client.py` that will attempt to connect to Snowflake using environment variables (see file for variable names). It inserts classification results into a target table. Before running, set the following env vars in a `.env` file or export in your shell:
 
-```
-SNOWFLAKE_ACCOUNT=...
-SNOWFLAKE_USER=...
-SNOWFLAKE_PASSWORD=...
-SNOWFLAKE_WAREHOUSE=...
-SNOWFLAKE_DATABASE=...
-SNOWFLAKE_SCHEMA=...
-SNOWFLAKE_ROLE=...
-```
+Streamlit Cloud note
+---------------------
+- This repository provides two requirement lists:
+	- `requirements.txt` — minimal dependencies for running on Streamlit Community Cloud (recommended for quick public deploy).
+	- `requirements-full.txt` — full dependencies including `snowflake-connector-python` and `python-dotenv` for local usage or servers that support building native extensions.
 
-- The `snowflake/snowflake_setup.sql` file contains DDL for tables and example AI SQL snippets for accounts with Cortex/AI SQL enabled. Those examples are optional and depend on your Snowflake feature availability.
+If Streamlit Cloud fails installing dependencies, use `requirements.txt` (the app is designed to run without Snowflake in that mode). To enable Snowflake upload you must install the full requirements locally or run the app on a server where you can install `requirements-full.txt`.
 
 **Publish to GitHub**
 Use these commands (PowerShell):
