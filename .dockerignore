@@ -1,0 +1,12 @@
+__pycache__
+.venv
+data/images
+.git
+*.pyc
+tests
+venv
+*.pkl
+*.log
+dist
+build
+**/__pycache__
