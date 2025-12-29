@@ -1,9 +1,19 @@
 import streamlit as st
 import pandas as pd
 import os
+import sys
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 from datetime import datetime
+
+# Ensure project root is on sys.path so `import app.*` works when the
+# script is executed as `streamlit run app/streamlit_app.py` (Streamlit sets
+# sys.path[0] to the script's directory, which becomes `/app/app` inside the
+# container and prevents importing the top-level `app` package).
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 from app.image_classifier import classify_image
 
 st.set_page_config(page_title="AI-Assisted Inspection", layout="wide")
