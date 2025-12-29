@@ -1,0 +1,8 @@
+property_id,property_name,room_id,room_name,image_filename,notes
+1,Maple Apartments Apt 101,1,Living Room,lr_101_ok.jpg,light paint imperfections
+1,Maple Apartments Apt 101,2,Kitchen,k_101_exposed_wiring.jpg,exposed wiring near sink
+1,Maple Apartments Apt 101,3,Bathroom,b_101_damp.jpg,visible damp on lower wall
+1,Maple Apartments Apt 101,4,Bedroom,br_101_crack.jpg,hairline crack above window
+1,Maple Apartments Apt 101,5,Hallway,h_101_ok.jpg,good
+2,River View Unit 3,1,Living Room,rv3_lr_leak.jpg,ceiling stain
+2,River View Unit 3,2,Kitchen,rv3_k_ok.jpg,ok
